@@ -8,7 +8,7 @@ for advanced...
 COM /dev/... edit /dev/ttyUSB0
 115200 BAUDRATE
 
-#How to run
+# How to run
  * Compile and upload the code in the folder "Microcontroller Code" to the ESP32 or the board of your choice and make sure it remains attached to one of your ports (It uses USB communication
  * Run the script send.py on your pc and the pc should talk to the microcontroller, if not please edit the port section
 
