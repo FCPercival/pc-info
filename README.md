@@ -1,4 +1,4 @@
-# pc-info (Under Development)
+# pc-info (Under Development) Version 0.5
 A little project to see some info about your pc (ex. GPU temperature) on an external display driven by an ESP32.
 
 # Installation
