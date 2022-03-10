@@ -1,4 +1,4 @@
-# PC-info Version 1
+# PC-info Version 1.0
 A little project to show some info about your pc (Ex. GPU temperature) on an external display driven by an ESP32.
 The python script works only for NVIDIA cards.
 
