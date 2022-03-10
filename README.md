@@ -3,7 +3,7 @@ A little project to show some info about your pc (Ex. GPU temperature) on an ext
 The python script works only for NVIDIA cards.
 
 # Requirements
- * ESP-32 Board or any I2C/SPI capable board (**NOTE**: This code actually works only for ESP32 and ESP8266)
+ * ESP-32 Board or any I2C/SPI capable board (**NOTE**: This code works only for ESP32 and ESP8266)
  * GC9A01 IPS LCD 240x240 (Using SPI communication)
  * Python 3
 
