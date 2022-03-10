@@ -59,25 +59,41 @@ If you want to run the script at login put a shortcut on this folder `%APPDATA%\
  * AMD cards support
 
 # Supported LCD drivers 
-* GC9A01
-* HX8347C
-* HX8347D
-* HX8352C
-* HX8357B
-* ILI9225
-* ILI9341
-* ILI9481
-* ILI9486
-* ILI9488
-* JBT6K71
-* R61529
-* SEPS525
-* SSD1283A
-* SSD1331
-* SSD1351
-* ST7735
-* ST7789
-* ST7796
+- GC9A01 round display 240x240 [[test video](https://youtu.be/kJrAFm20-zg)]
+- HX8347C 240x320 [[test video](https://youtu.be/25ymuV51YQM)]
+- HX8347D 240x320 [[test video](https://youtu.be/sv6LGkLRZjI)]
+- HX8352C 240x400 [[test video](https://youtu.be/m2xWYbS3t7s)]
+- HX8357B (9-bit SPI) 320x480 [[test video](https://youtu.be/pB6_LOCiUqg)]
+- ILI9225 176x220 [[test video](https://youtu.be/jm2UrCG27F4)]
+- ILI9341 240x320 [[test video](https://youtu.be/NtlEEL7MkQY)]
+- ILI9341 M5Stack 320x240 [[test video](https://youtu.be/UoPpIjVSO5Q)]
+- ILI9481 320x480 (18 bit color) [[test video](https://youtu.be/YxjuuCFhlqM)]
+- ILI9486 320x480 (18 bit color) [[test video](https://youtu.be/pZ6izDqmVds)]
+- ILI9488 320x480 (18 bit color) [[test video](https://youtu.be/NkE-LhtLHBQ)]
+- JBT6K71 (8-bit Parallel) 240x320 [[test video](https://youtu.be/qid3F4Gb0mM)]
+- R61529 (8-bit/16-bit Parallel) 320x480 [[test video](https://youtu.be/s93gxjbIAT8)]
+- SEPS525 160x128 [[test video](https://youtu.be/tlmvFBHYv-k)]
+- SSD1283A 130x130 [[test video](https://youtu.be/OrIchaRikiQ)]
+- SSD1331 96x64 [[test video](https://youtu.be/v20b1A_KDcQ)]
+- SSD1351 128x128 [[test video](https://youtu.be/5TIM-qMVBNQ)]
+- SSD1351 128x96
+- ST7735 128x160 (various tabs) [[test video](https://youtu.be/eRBSSD_N9II)]
+- ST7735 128x128 (various tabs) [[test video](https://youtu.be/6rueSV2Ee6c)]
+- ST7735 80x160 [[test video](https://youtu.be/qESHDuYo_Mk)]
+- ST7789 TTGO T-Display 135x240 [[test video](https://youtu.be/Zk81_T8c20E)]
+- ST7789 240x240 [[test video](https://youtu.be/Z27zYg5uAsk)]
+- ST7789 TTGO T-Watch 240x240 [[test video](https://youtu.be/9AqsXMB8Qbk)]
+- ST7789 round corner display 240x280 [[test video](https://youtu.be/KzDC02wg8z0)]
+- ST7789 240x320 [[test video](https://youtu.be/ZEvc1LkuVuQ)]
+- ST7796 320x480 [[test video](https://youtu.be/hUL-RuG4MAQ)]
+- Canvas (framebuffer)
+- Canvas_Indexed (for saving memory space)
+
+# Libraries used
+ * [Arduino GFX](https://github.com/moononournation/Arduino_GFX)
+ * [JPGDEC](https://github.com/bitbank2/JPEGDEC)
+ * [PNGLE](https://github.com/kikuchan/pngle)
+
 
 # LICENSE
 This project is under the MIT licence, see the LICENSE file for more informations.
