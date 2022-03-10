@@ -42,6 +42,8 @@ After the code is succesfully uploaded you should see a message on the LCD scree
 If everything is correct you should see the current GPU temperature on the screen.
 If you want to run the script at login put a shortcut on this folder `%APPDATA%\Roaming\Microsoft\Windows\Start Menu\Programs\Startup`
 
+*Note*: You could also find an enclosure to fix the display. (stl file on "other files" folder)
+
 # FAQ
  * The python script works for AMD cards? 
    
@@ -59,7 +61,7 @@ If you want to run the script at login put a shortcut on this folder `%APPDATA%\
  * AMD cards support
 
 # Supported LCD drivers 
-- GC9A01 round display 240x240 [[test video](https://youtu.be/kJrAFm20-zg)]
+- GC9A01 Round display 240x240 [[test video](https://youtu.be/kJrAFm20-zg)] (**Recommended**)
 - HX8347C 240x320 [[test video](https://youtu.be/25ymuV51YQM)]
 - HX8347D 240x320 [[test video](https://youtu.be/sv6LGkLRZjI)]
 - HX8352C 240x400 [[test video](https://youtu.be/m2xWYbS3t7s)]
@@ -88,6 +90,9 @@ If you want to run the script at login put a shortcut on this folder `%APPDATA%\
 - ST7796 320x480 [[test video](https://youtu.be/hUL-RuG4MAQ)]
 - Canvas (framebuffer)
 - Canvas_Indexed (for saving memory space)
+
+# Images
+<img src="https://github.com/FCPercival/pc-info/blob/main/Other%20Files/testGreen.jpg" width="500"><img src="https://github.com/FCPercival/pc-info/blob/main/Other%20Files/testOrange.jpg" width="500"><img src="https://github.com/FCPercival/pc-info/blob/main/Other%20Files/testRed.jpg" width="500">
 
 # Libraries used
  * [Arduino GFX](https://github.com/moononournation/Arduino_GFX)
