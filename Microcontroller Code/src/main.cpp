@@ -1,24 +1,15 @@
 
 /*********
-  Federico Vittorio Chiodo
-
+ * 
+ * Author Federico Vittorio Chiodo
+ * This project is under the MIT License
+ *
 *********/
 
 
 #include <Arduino.h>
 //#include <String.h>
 //#include <Preferences.h>  
-
-
-//int temperatura=0;
-//bool inRiscaldamento=true;
-
-
-
-
-void updateLCD(int temperature);
-void firstStart();
-
 
 /*
 *
@@ -27,6 +18,9 @@ void firstStart();
 *
 *
 */
+
+void updateLCD(int temperature);
+void firstStart();
 
 
 #define PNG_FILENAME_GREEN "/green.png" //Circle green
@@ -247,7 +241,7 @@ Arduino_ST7789 *gfx = new Arduino_ST7789(bus, -1 /* RST */, 2 /* rotation */, tr
 int16_t xOffset = 0;
 int16_t yOffset = 0;
 
-// Pngle init callback
+//Pngle init callback
 void pngleInitCallback(pngle_t *pngle, uint32_t w, uint32_t h)
 {
   int16_t gfxW = gfx->width();
@@ -256,10 +250,10 @@ void pngleInitCallback(pngle_t *pngle, uint32_t w, uint32_t h)
   yOffset = (h > gfxH) ? 0 : ((gfxH - h) / 2);
 }
 
-// Pngle draw callback
+//Pngle draw callback
 void pngleDrawCallback(pngle_t *pngle, uint32_t x, uint32_t y, uint32_t w, uint32_t h, uint8_t rgba[4])
 {
-  if (rgba[3]) // not transparent
+  if (rgba[3]) //not transparent
   {
     gfx->fillRect(x + xOffset, y + yOffset, w, h, gfx->color565(rgba[0], rgba[1], rgba[2]));
   }
@@ -267,11 +261,11 @@ void pngleDrawCallback(pngle_t *pngle, uint32_t x, uint32_t y, uint32_t w, uint3
 
 
 void setup() {
-  Serial.begin(115200); //era 115200
+  Serial.begin(115200);
   Serial.setTimeout(1);
   // Init Display
   gfx->begin();
-  Serial.println("LCD Inizializzato");
+  Serial.println("LCD initialized");
   gfx->fillScreen(BLACK);
 
   #ifdef TFT_BL
@@ -310,10 +304,10 @@ void updateLCD(int temperature){
       if (!SD.begin(SDCARD_SS_PIN, SDCARD_SPI, 4000000UL))
     #elif defined(ESP32)
       if (!SPIFFS.begin())
-      // if (!SD.begin(SS))
+      //if (!SD.begin(SS))
     #elif defined(ESP8266)
       if (!LittleFS.begin())
-      // if (!SD.begin(SS))
+      //if (!SD.begin(SS))
     #else
       if (!SD.begin())
     #endif
@@ -330,10 +324,10 @@ void updateLCD(int temperature){
           File pngFile = SD.open(PNG_FILENAME_GREEN, "r");
       #elif defined(ESP32)
           File pngFile = SPIFFS.open(PNG_FILENAME_GREEN, "r");
-          // File pngFile = SD.open(PNG_FILENAME_GREEN, "r");
+          //File pngFile = SD.open(PNG_FILENAME_GREEN, "r");
       #elif defined(ESP8266)
           File pngFile = LittleFS.open(PNG_FILENAME_GREEN, "r");
-          // File pngFile = SD.open(PNG_FILENAME_GREEN, "r");
+          //File pngFile = SD.open(PNG_FILENAME_GREEN, "r");
       #else
           File pngFile = SD.open(PNG_FILENAME_GREEN, FILE_READ);
       #endif
@@ -348,10 +342,10 @@ void updateLCD(int temperature){
         pngle_t *pngle = pngle_new();
         pngle_set_init_callback(pngle, pngleInitCallback);
         pngle_set_draw_callback(pngle, pngleDrawCallback);
-        char buf[16]; // buffer minimum size is 16 but it can be much larger, e.g. 2048
+        char buf[16]; //Buffer minimum size is 16 but it can be much larger, e.g. 2048
         int remain = 0;
         int len;
-        gfx->fillScreen(BLACK); // transprant background color
+        gfx->fillScreen(BLACK); //Transprant background color
         while ((len = pngFile.readBytes(buf + remain, sizeof(buf) - remain)) > 0)
         {
           int fed = pngle_feed(pngle, buf, remain + len);
@@ -377,7 +371,7 @@ void updateLCD(int temperature){
       gfx->setTextColor(GREEN);    //Green text 
       gfx->setTextSize(3 /* x scale */, 3 /* y scale */, 3 /* pixel_margin */);
       gfx->print(temperature); //*Symbol ° (char)223 o String tempUnit = " \xB0""C";
-      gfx->print((char) 247); //*247 FUNZIONA 9 troppo centrato in y
+      gfx->print((char) 247); //*247 OK 9 meh
       gfx->println("C");
 
     }
@@ -388,10 +382,10 @@ void updateLCD(int temperature){
       if (!SD.begin(SDCARD_SS_PIN, SDCARD_SPI, 4000000UL))
     #elif defined(ESP32)
       if (!SPIFFS.begin())
-      // if (!SD.begin(SS))
+      //if (!SD.begin(SS))
     #elif defined(ESP8266)
       if (!LittleFS.begin())
-      // if (!SD.begin(SS))
+      //if (!SD.begin(SS))
     #else
       if (!SD.begin())
     #endif
@@ -408,10 +402,10 @@ void updateLCD(int temperature){
           File pngFile = SD.open(PNG_FILENAME_ORANGE_HEATING, "r");
       #elif defined(ESP32)
           File pngFile = SPIFFS.open(PNG_FILENAME_ORANGE_HEATING, "r");
-          // File pngFile = SD.open(PNG_FILENAME_ORANGE_HEATING, "r");
+          //File pngFile = SD.open(PNG_FILENAME_ORANGE_HEATING, "r");
       #elif defined(ESP8266)
           File pngFile = LittleFS.open(PNG_FILENAME_ORANGE_HEATING, "r");
-          // File pngFile = SD.open(PNG_FILENAME_ORANGE_HEATING, "r");
+          //File pngFile = SD.open(PNG_FILENAME_ORANGE_HEATING, "r");
       #else
           File pngFile = SD.open(PNG_FILENAME_ORANGE_HEATING, FILE_READ);
       #endif
@@ -426,10 +420,10 @@ void updateLCD(int temperature){
         pngle_t *pngle = pngle_new();
         pngle_set_init_callback(pngle, pngleInitCallback);
         pngle_set_draw_callback(pngle, pngleDrawCallback);
-        char buf[16]; // buffer minimum size is 16 but it can be much larger, e.g. 2048
+        char buf[16]; //Buffer minimum size is 16 but it can be much larger, e.g. 2048
         int remain = 0;
         int len;
-        gfx->fillScreen(BLACK); // transprant background color
+        gfx->fillScreen(BLACK); //Transprant background color
         while ((len = pngFile.readBytes(buf + remain, sizeof(buf) - remain)) > 0)
         {
           int fed = pngle_feed(pngle, buf, remain + len);
@@ -452,11 +446,10 @@ void updateLCD(int temperature){
       Serial.printf("Time used: %lu\n", millis() - start);
 
       gfx->setCursor(90, 175);  //100, 175
-      gfx->setTextColor(ORANGE);
-      
+      gfx->setTextColor(ORANGE); //Orange text
       gfx->setTextSize(3 /* x scale */, 3 /* y scale */, 3 /* pixel_margin */);
-      gfx->print(temperature); //*Simbolo ° (char)223 o String tempUnit = " \xB0""C";
-      gfx->print((char) 247); //*247 FUNZIONA 9 troppo centrato in y
+      gfx->print(temperature); //*Symbol ° (char)223 o String tempUnit = " \xB0""C";
+      gfx->print((char) 247); //*247 OK 9 meh
       gfx->println("C");
       
       }
@@ -468,10 +461,10 @@ void updateLCD(int temperature){
       if (!SD.begin(SDCARD_SS_PIN, SDCARD_SPI, 4000000UL))
     #elif defined(ESP32)
       if (!SPIFFS.begin())
-      // if (!SD.begin(SS))
+      //if (!SD.begin(SS))
     #elif defined(ESP8266)
       if (!LittleFS.begin())
-      // if (!SD.begin(SS))
+      //if (!SD.begin(SS))
     #else
       if (!SD.begin())
     #endif
@@ -506,10 +499,10 @@ void updateLCD(int temperature){
         pngle_t *pngle = pngle_new();
         pngle_set_init_callback(pngle, pngleInitCallback);
         pngle_set_draw_callback(pngle, pngleDrawCallback);
-        char buf[16]; // buffer minimum size is 16 but it can be much larger, e.g. 2048
+        char buf[16]; //Buffer minimum size is 16 but it can be much larger, e.g. 2048
         int remain = 0;
         int len;
-        gfx->fillScreen(BLACK); // transprant background color
+        gfx->fillScreen(BLACK); //Transprant background color
         while ((len = pngFile.readBytes(buf + remain, sizeof(buf) - remain)) > 0)
         {
           int fed = pngle_feed(pngle, buf, remain + len);
@@ -532,10 +525,10 @@ void updateLCD(int temperature){
       Serial.printf("Time used: %lu\n", millis() - start);
 
       gfx->setCursor(90, 175);  //100, 175
-      gfx->setTextColor(RED);
+      gfx->setTextColor(RED); //Red text
       gfx->setTextSize(3 /* x scale */, 3 /* y scale */, 3 /* pixel_margin */);
-      gfx->print(temperature); //*Simbolo ° (char)223 o String tempUnit = " \xB0""C";
-      gfx->print((char) 247); //*247 FUNZIONA 9 troppo centrato in y
+      gfx->print(temperature); //*Symbol ° (char)223 or String tempUnit = " \xB0""C";
+      gfx->print((char) 247); //*247 OK 9 meh
       gfx->println("C");
       
       }
@@ -549,9 +542,9 @@ void firstStart(){
   
 
   gfx->setCursor(0, 100);  //100, 175
-  gfx->setTextColor(ORANGE);    //Rosso 
+  gfx->setTextColor(ORANGE);    //Orange text 
   gfx->setTextSize(2 /* x scale */, 2 /* y scale */, 3 /* pixel_margin */);
-  gfx->println(" Run sendGPUTemp.py\n     on your pc!");
+  gfx->println(" Run sendGPUTemp.pyw\n     on your pc!");
 
     
   
