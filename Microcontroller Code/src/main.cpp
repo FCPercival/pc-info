@@ -7,7 +7,7 @@
 
 #include <Arduino.h>
 //#include <String.h>
-#include <Preferences.h>   //*Libreria per variabili non volatili
+//#include <Preferences.h>  
 
 
 //int temperatura=0;
@@ -23,13 +23,15 @@ void firstStart();
 /*
 *
 *
-*   Funzioni e variabili LCD
+*   Functions and LCD Variables
 *
 *
 */
 
-#define PNG_FILENAME "/octocat.png" //Home Normale
-#define PNG_FILENAME_HEATING "/riscaldamento.png"  //Home in riscaldamento
+
+#define PNG_FILENAME_GREEN "/green.png" //Circle green
+#define PNG_FILENAME_ORANGE_HEATING "/orange.png" //Cricle orange
+#define PNG_FILENAME_RED_HEATING "/red.png"  //Circle Red with 
 
 /*******************************************************************************
  * Start of Arduino_GFX setting
@@ -302,7 +304,8 @@ void loop(){
 
 int cont=0;
 void updateLCD(int temperature){
-  if(temperature<=53){
+  if(temperature<=59){
+    //*Set Green
     #if defined(ARDUINO_ARCH_SAMD) && defined(SEEED_GROVE_UI_WIRELESS)
       if (!SD.begin(SDCARD_SS_PIN, SDCARD_SPI, 4000000UL))
     #elif defined(ESP32)
@@ -324,21 +327,21 @@ void updateLCD(int temperature){
 
       /* Wio Terminal */
       #if defined(ARDUINO_ARCH_SAMD) && defined(SEEED_GROVE_UI_WIRELESS)
-          File pngFile = SD.open(PNG_FILENAME, "r");
+          File pngFile = SD.open(PNG_FILENAME_GREEN, "r");
       #elif defined(ESP32)
-          File pngFile = SPIFFS.open(PNG_FILENAME, "r");
-          // File pngFile = SD.open(PNG_FILENAME, "r");
+          File pngFile = SPIFFS.open(PNG_FILENAME_GREEN, "r");
+          // File pngFile = SD.open(PNG_FILENAME_GREEN, "r");
       #elif defined(ESP8266)
-          File pngFile = LittleFS.open(PNG_FILENAME, "r");
-          // File pngFile = SD.open(PNG_FILENAME, "r");
+          File pngFile = LittleFS.open(PNG_FILENAME_GREEN, "r");
+          // File pngFile = SD.open(PNG_FILENAME_GREEN, "r");
       #else
-          File pngFile = SD.open(PNG_FILENAME, FILE_READ);
+          File pngFile = SD.open(PNG_FILENAME_GREEN, FILE_READ);
       #endif
 
       if (!pngFile || pngFile.isDirectory())
       {
-        Serial.println(F("ERROR: Failed to open " PNG_FILENAME " file for reading"));
-        gfx->println(F("ERROR: Failed to open " PNG_FILENAME " file for reading"));
+        Serial.println(F("ERROR: Failed to open " PNG_FILENAME_GREEN " file for reading"));
+        gfx->println(F("ERROR: Failed to open " PNG_FILENAME_GREEN " file for reading"));
       }
       else
       {
@@ -371,19 +374,94 @@ void updateLCD(int temperature){
       Serial.printf("Time used: %lu\n", millis() - start);
 
       gfx->setCursor(90, 175);  //100, 175
-      gfx->setTextColor(GREEN);    //Rosso 
+      gfx->setTextColor(GREEN);    //Green text 
+      gfx->setTextSize(3 /* x scale */, 3 /* y scale */, 3 /* pixel_margin */);
+      gfx->print(temperature); //*Symbol ° (char)223 o String tempUnit = " \xB0""C";
+      gfx->print((char) 247); //*247 FUNZIONA 9 troppo centrato in y
+      gfx->println("C");
+
+    }
+  }
+  }else if(temperature<=70){
+    /* Wio Terminal */
+    #if defined(ARDUINO_ARCH_SAMD) && defined(SEEED_GROVE_UI_WIRELESS)
+      if (!SD.begin(SDCARD_SS_PIN, SDCARD_SPI, 4000000UL))
+    #elif defined(ESP32)
+      if (!SPIFFS.begin())
+      // if (!SD.begin(SS))
+    #elif defined(ESP8266)
+      if (!LittleFS.begin())
+      // if (!SD.begin(SS))
+    #else
+      if (!SD.begin())
+    #endif
+      {
+        Serial.println(F("ERROR: File System Mount Failed!"));
+        gfx->println(F("ERROR: File System Mount Failed!"));
+      }
+      else
+      {
+        unsigned long start = millis();
+
+      /* Wio Terminal */
+      #if defined(ARDUINO_ARCH_SAMD) && defined(SEEED_GROVE_UI_WIRELESS)
+          File pngFile = SD.open(PNG_FILENAME_ORANGE_HEATING, "r");
+      #elif defined(ESP32)
+          File pngFile = SPIFFS.open(PNG_FILENAME_ORANGE_HEATING, "r");
+          // File pngFile = SD.open(PNG_FILENAME_ORANGE_HEATING, "r");
+      #elif defined(ESP8266)
+          File pngFile = LittleFS.open(PNG_FILENAME_ORANGE_HEATING, "r");
+          // File pngFile = SD.open(PNG_FILENAME_ORANGE_HEATING, "r");
+      #else
+          File pngFile = SD.open(PNG_FILENAME_ORANGE_HEATING, FILE_READ);
+      #endif
+
+      if (!pngFile || pngFile.isDirectory())
+      {
+        Serial.println(F("ERROR: Failed to open " PNG_FILENAME_ORANGE_HEATING " file for reading"));
+        gfx->println(F("ERROR: Failed to open " PNG_FILENAME_ORANGE_HEATING " file for reading"));
+      }
+      else
+      {
+        pngle_t *pngle = pngle_new();
+        pngle_set_init_callback(pngle, pngleInitCallback);
+        pngle_set_draw_callback(pngle, pngleDrawCallback);
+        char buf[16]; // buffer minimum size is 16 but it can be much larger, e.g. 2048
+        int remain = 0;
+        int len;
+        gfx->fillScreen(BLACK); // transprant background color
+        while ((len = pngFile.readBytes(buf + remain, sizeof(buf) - remain)) > 0)
+        {
+          int fed = pngle_feed(pngle, buf, remain + len);
+          if (fed < 0)
+          {
+            Serial.printf("ERROR: %s\n", pngle_error(pngle));
+            break;
+          }
+
+          remain = remain + len - fed;
+          if (remain > 0)
+          {
+            memmove(buf, buf + fed, remain);
+          }
+      }
+
+      pngle_destroy(pngle);
+      pngFile.close();
+
+      Serial.printf("Time used: %lu\n", millis() - start);
+
+      gfx->setCursor(90, 175);  //100, 175
+      gfx->setTextColor(ORANGE);
+      
       gfx->setTextSize(3 /* x scale */, 3 /* y scale */, 3 /* pixel_margin */);
       gfx->print(temperature); //*Simbolo ° (char)223 o String tempUnit = " \xB0""C";
       gfx->print((char) 247); //*247 FUNZIONA 9 troppo centrato in y
       gfx->println("C");
-
-      //* To temp (RICALDAMENTO)
-      //gfx->setCursor(85, 200);  //100, 175
-      //gfx->setTextSize(2 /* x scale */, 2 /* y scale */, 2 /* pixel_margin */);
-      //gfx->println("-> 30C");
-      //delay(5000);
+      
+      }
+    //delay(5000);
     }
-  }
   }else{
     /* Wio Terminal */
     #if defined(ARDUINO_ARCH_SAMD) && defined(SEEED_GROVE_UI_WIRELESS)
@@ -407,21 +485,21 @@ void updateLCD(int temperature){
 
       /* Wio Terminal */
       #if defined(ARDUINO_ARCH_SAMD) && defined(SEEED_GROVE_UI_WIRELESS)
-          File pngFile = SD.open(PNG_FILENAME_HEATING, "r");
+          File pngFile = SD.open(PNG_FILENAME_RED_HEATING, "r");
       #elif defined(ESP32)
-          File pngFile = SPIFFS.open(PNG_FILENAME_HEATING, "r");
-          // File pngFile = SD.open(PNG_FILENAME_HEATING, "r");
+          File pngFile = SPIFFS.open(PNG_FILENAME_RED_HEATING, "r");
+          // File pngFile = SD.open(PNG_FILENAME_RED_HEATING, "r");
       #elif defined(ESP8266)
-          File pngFile = LittleFS.open(PNG_FILENAME_HEATING, "r");
-          // File pngFile = SD.open(PNG_FILENAME_HEATING, "r");
+          File pngFile = LittleFS.open(PNG_FILENAME_RED_HEATING, "r");
+          // File pngFile = SD.open(PNG_FILENAME_RED_HEATING, "r");
       #else
-          File pngFile = SD.open(PNG_FILENAME_HEATING, FILE_READ);
+          File pngFile = SD.open(PNG_FILENAME_RED_HEATING, FILE_READ);
       #endif
 
       if (!pngFile || pngFile.isDirectory())
       {
-        Serial.println(F("ERROR: Failed to open " PNG_FILENAME_HEATING " file for reading"));
-        gfx->println(F("ERROR: Failed to open " PNG_FILENAME_HEATING " file for reading"));
+        Serial.println(F("ERROR: Failed to open " PNG_FILENAME_RED_HEATING " file for reading"));
+        gfx->println(F("ERROR: Failed to open " PNG_FILENAME_RED_HEATING " file for reading"));
       }
       else
       {
@@ -454,12 +532,7 @@ void updateLCD(int temperature){
       Serial.printf("Time used: %lu\n", millis() - start);
 
       gfx->setCursor(90, 175);  //100, 175
-      if(temperature>70){
-        gfx->setTextColor(RED);
-      }else{
-        gfx->setTextColor(ORANGE);
-      }
-      
+      gfx->setTextColor(RED);
       gfx->setTextSize(3 /* x scale */, 3 /* y scale */, 3 /* pixel_margin */);
       gfx->print(temperature); //*Simbolo ° (char)223 o String tempUnit = " \xB0""C";
       gfx->print((char) 247); //*247 FUNZIONA 9 troppo centrato in y
