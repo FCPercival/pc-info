@@ -9,7 +9,7 @@ The python script works only for NVIDIA cards.
 
 
 # Installation
-There are two scripts, one for your microcontroller and one to run on your local PC
+There are two scripts, one for your microcontroller and one to run on your local PC (sendBackground.pyw)
 
 ## Prepare your IDE and install Python
  1. Install the latest Python release from [here](https://www.python.org/downloads/)
@@ -40,6 +40,7 @@ Now, proceed opening the "Microcontroller Code" folder with PlatformIO, in the P
 After the code is succesfully uploaded you should see a message on the LCD screen. Now we need to run the python code on your local pc, so first we need to know in which port the microcontroller is connected, to do so look in the vscode console, platformio during the upload should have printed it (For example COM1 for Windows and /dev/ttyESB0 for Linux), now modify the port variable on the python script with that port and launch the script.
 
 If everything is correct you should see the current GPU temperature on the screen.
+If you want to run the script at login put a shortcut on this folder `%APPDATA%\Roaming\Microsoft\Windows\Start Menu\Programs\Startup`
 
 # FAQ
  * The python script works for AMD cards? 
