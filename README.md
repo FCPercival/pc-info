@@ -94,6 +94,8 @@ If you want to run the script at login put a shortcut on this folder `%APPDATA%\
 # Images
 <img src="https://github.com/FCPercival/pc-info/blob/main/Other%20Files/testGreen.jpg" width="500"><img src="https://github.com/FCPercival/pc-info/blob/main/Other%20Files/testOrange.jpg" width="500"><img src="https://github.com/FCPercival/pc-info/blob/main/Other%20Files/testRed.jpg" width="500">
 
+*NOTE*: In these images the colors are a bit off
+
 # Libraries used
  * [Arduino GFX](https://github.com/moononournation/Arduino_GFX)
  * [JPGDEC](https://github.com/bitbank2/JPEGDEC)
